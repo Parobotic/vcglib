@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 * VCGLib                                                            o o     *
 * Visual and Computer Graphics Library                            o     o   *
 *                                                                _   O  _   *
@@ -8,7 +8,7 @@
 *                                                                    \      *
 * All rights reserved.                                                      *
 *                                                                           *
-* This program is free software; you can redistribute it and/or modify      *   
+* This program is free software; you can redistribute it and/or modify      *
 * it under the terms of the GNU General Public License as published by      *
 * the Free Software Foundation; either version 2 of the License, or         *
 * (at your option) any later version.                                       *
@@ -25,15 +25,16 @@
 
 #include <vcg/connectors/halfedge_pos.h>
 
-using namespace std;
 using namespace vcg::hedge;
-using namespace vcg::tri;
 
 namespace vcg
 {
     namespace tri
     {
 
+
+
+        using namespace std;
         /*!
           * \brief Class containing functions to modify the topology of a halfedge based mesh
           *
@@ -123,7 +124,7 @@ namespace vcg
 
                     HEdgePointer hp;
 
-                    vector<VertexPointer> vps = getVertices(fp);
+                    std::vector<VertexPointer> vps = getVertices(fp);
 
                     assert(vps.size()==4);
 
@@ -138,7 +139,7 @@ namespace vcg
                     while(hp->HVp() != vp)
                         hp= hp->HNp();
 
-                    vector<HEdgePointer> hps = getHEdges(fp,hp);
+                    std::vector<HEdgePointer> hps = getHEdges(fp,hp);
 
                     assert(vp == hps[0]->HVp());
 
@@ -335,13 +336,13 @@ namespace vcg
                     bool HasHE = MeshType::HEdgeType::HasHEAdjacency();
                     bool HasEH = MeshType::EdgeType::HasEHAdjacency();
 
-                    vector<HEdgePointer> ext_hedges;
+                    std::vector<HEdgePointer> ext_hedges;
 
-                    vector<HEdgePointer> int_hedges = getHEdges(fp);
+                    std::vector<HEdgePointer> int_hedges = getHEdges(fp);
 
                     Allocator<MeshType>::DeleteFace( m, *(fp) );
 
-                    for(typename vector<HEdgePointer>::iterator hi = int_hedges.begin(); hi != int_hedges.end();++hi)
+                    for(typename std::vector<HEdgePointer>::iterator hi = int_hedges.begin(); hi != int_hedges.end();++hi)
                     {
 
                         if((*hi)->HOp()->HFp() != fp)
@@ -356,7 +357,7 @@ namespace vcg
 
                     }
 
-                    for(typename vector<HEdgePointer>::iterator hi = int_hedges.begin(); hi != int_hedges.end();++hi)
+                    for(typename std::vector<HEdgePointer>::iterator hi = int_hedges.begin(); hi != int_hedges.end();++hi)
                         Allocator<MeshType>::DeleteHEdge( m, *(*hi) );
 
                     assert(ext_hedges.size() == 2);
@@ -434,9 +435,9 @@ namespace vcg
                     assert(!has_doublet_quad(fp1));
                     assert(!has_doublet_quad(fp2));
 
-                    vector<FacePointer> fps;
-                    typedef vector<HEdgePointer> hedge_vect;
-                    vector<hedge_vect> hps;
+                    std::vector<FacePointer> fps;
+                    typedef std::vector<HEdgePointer> hedge_vect;
+                    std::vector<hedge_vect> hps;
 
                     fps.push_back(fp1);
                     fps.push_back(fp2);
@@ -514,8 +515,8 @@ namespace vcg
 
                     HEdgePointer hep = p.HE();
 
-                    typedef vector<HEdgePointer> hedge_vect;
-                    vector<hedge_vect> hedges;
+                    typedef std::vector<HEdgePointer> hedge_vect;
+                    std::vector<hedge_vect> hedges;
 
                     do
                     {
@@ -638,7 +639,7 @@ namespace vcg
                   *
                   * \return Pointer to the new face if it has been inserted, NULL otherwise
                   */
-                static FacePointer add_face(MeshType &m, vector<VertexPointer> &vps)
+                static FacePointer add_face(MeshType &m, std::vector<VertexPointer> &vps)
                 {
 
                     assert(MeshType::VertexType::HasVHAdjacency());
@@ -657,13 +658,13 @@ namespace vcg
                         assert( count(vps.begin(), vps.end(), vps[i]) == 1 );
                     }
 
-                    vector<HEdgePointer> hps;
+                    std::vector<HEdgePointer> hps;
 
                     while(hps.size() < size)
                         if( !can_add_hedge(vps, hps) )
                             return NULL;
 
-                    vector<bool> non_manifold_vertices(size, false);
+                    std::vector<bool> non_manifold_vertices(size, false);
 
                     return add_face_unsafe( m,vps, hps, non_manifold_vertices);
 
@@ -707,12 +708,12 @@ namespace vcg
                   *
                   * \return Pointer to the new face
                   */
-                static FacePointer add_face_unsafe(MeshType &m, vector<VertexPointer> &vps)
+                static FacePointer add_face_unsafe(MeshType &m, std::vector<VertexPointer> &vps)
                 {
                     unsigned int size = vps.size();
 
-                    vector<HEdgePointer> hps;
-                    vector<bool> non_manifold_vertices;
+                    std::vector<HEdgePointer> hps;
+                    std::vector<bool> non_manifold_vertices;
 
                     while(hps.size() < size)
                     {
@@ -736,7 +737,7 @@ namespace vcg
                   *
                   * \return Pointer to the new face
                   */
-                static FacePointer add_face_unsafe(MeshType &m, vector<VertexPointer> &vps, vector<HEdgePointer> &hps, vector<bool> &non_manifold_vertices)
+                static FacePointer add_face_unsafe(MeshType &m, std::vector<VertexPointer> &vps, std::vector<HEdgePointer> &hps, std::vector<bool> &non_manifold_vertices)
                 {
 
                     assert(MeshType::VertexType::HasVHAdjacency());
@@ -809,7 +810,7 @@ namespace vcg
 
                         // update hedge pointers (if needed)
                         if( pu.NeedUpdate() )
-                            for(typename vector<HEdgePointer>::iterator hpsi = hps.begin(); hpsi != hps.end(); ++hpsi)
+                            for(typename std::vector<HEdgePointer>::iterator hpsi = hps.begin(); hpsi != hps.end(); ++hpsi)
                             {
                                 if((*hpsi))
                                     pu.Update(*hpsi);
@@ -848,7 +849,7 @@ namespace vcg
                         }
                     }
 
-                    vector<HEdgePointer> hps1;
+                    std::vector<HEdgePointer> hps1;
 
                     for(unsigned int i = 0; i < size; i++)
                     {
@@ -965,7 +966,7 @@ namespace vcg
                 static void remove_face_unsafe (MeshType &m, FacePointer fp)
                 {
 
-                    vector<HEdgePointer> hps = getHEdges(fp);
+                    std::vector<HEdgePointer> hps = getHEdges(fp);
 
                     int size = hps.size();
 
@@ -1065,7 +1066,7 @@ namespace vcg
                   * \retval true if hedge can be inserted
                   * \retval false otherwise
                   */
-                static bool can_add_hedge( vector<VertexPointer> &vps, vector<HEdgePointer> &hps )
+                static bool can_add_hedge( std::vector<VertexPointer> &vps, std::vector<HEdgePointer> &hps )
                 {
 
                     unsigned int i = hps.size();
@@ -1159,7 +1160,7 @@ namespace vcg
 
                     do
                     {
-                        vector<FacePointer> incident_faces = get_incident_faces( p.V() );
+                        std::vector<FacePointer> incident_faces = get_incident_faces( p.V() );
 
                         unsigned int size = incident_faces.size();
 
@@ -1197,11 +1198,11 @@ namespace vcg
                     assert(hp->HFp()->VN() == 4);
                     assert(!hp->IsD());
 
-                    vector<FacePointer> faces;
+                    std::vector<FacePointer> faces;
 
                     HEdgePointer hopp = hp->HNp()->HNp();
-                    vector<FacePointer> faces1 = get_incident_faces(hp->HVp(), hp);
-                    vector<FacePointer> faces2 = get_incident_faces(hp->HNp()->HNp()->HVp(), hopp);
+                    std::vector<FacePointer> faces1 = get_incident_faces(hp->HVp(), hp);
+                    std::vector<FacePointer> faces2 = get_incident_faces(hp->HNp()->HNp()->HVp(), hopp);
 
                     faces.assign(faces1.begin()+1, faces1.end());
                     faces.assign(faces2.begin()+1, faces2.end());
@@ -1239,8 +1240,8 @@ namespace vcg
                     set<VertexPointer> set1;
                     set<VertexPointer> set2;
 
-                    vector<VertexPointer> vect1 = getVertices(hp->HVp());
-                    vector<VertexPointer> vect2 = getVertices(hp->HNp()->HNp()->HVp());
+                    std::vector<VertexPointer> vect1 = getVertices(hp->HVp());
+                    std::vector<VertexPointer> vect2 = getVertices(hp->HNp()->HNp()->HVp());
 
                     set1.insert(vect1.begin(), vect1.end());
                     set2.insert(vect2.begin(), vect2.end());
@@ -1249,9 +1250,9 @@ namespace vcg
                     if(vect2.size() < size)
                         size = vect2.size();
 
-                    vector<VertexPointer> intersection(size);
+                    std::vector<VertexPointer> intersection(size);
 
-                    typename vector<VertexPointer>::iterator it;
+                    typename std::vector<VertexPointer>::iterator it;
                     it = set_intersection(set1.begin(), set1.end(), set2.begin(), set2.end(), intersection.begin());
 
                     size = it- intersection.begin();
@@ -1286,7 +1287,7 @@ namespace vcg
                     }
 
 
-                    vector<HEdgePointer> vect2 = get_incident_hedges(vp);
+                    std::vector<HEdgePointer> vect2 = get_incident_hedges(vp);
 
                     set<HEdgePointer> set2;
                     set2.insert(vect2.begin(), vect2.end());
@@ -1308,7 +1309,7 @@ namespace vcg
                     assert(vp);
                     assert(!vp->IsD());
 
-                    vector<FacePointer> faces = get_incident_faces(vp);
+                    std::vector<FacePointer> faces = get_incident_faces(vp);
 
                     unsigned int size = faces.size();
                     int null_count = 0;
@@ -1350,14 +1351,14 @@ namespace vcg
                   *
                   * \return Vector containing vertices
                   */
-                static vector<VertexPointer> getVertices(VertexPointer vp)
+                static std::vector<VertexPointer> getVertices(VertexPointer vp)
                 {
                     assert(vp);
                     assert(!vp->IsD());
 
                     HEdgePointer hp = vp->VHp();
 
-                    vector<VertexPointer> ret;
+                    std::vector<VertexPointer> ret;
 
                     if( !hp )
                         return ret;
@@ -1399,11 +1400,11 @@ namespace vcg
 
                     set<FacePointer> ret;
 
-                    vector<VertexPointer> vertices = getVertices(vp);
+                    std::vector<VertexPointer> vertices = getVertices(vp);
 
-                    for(typename vector<VertexPointer>::iterator vi = vertices.begin(); vi!= vertices.end(); ++vi)
+                    for(typename std::vector<VertexPointer>::iterator vi = vertices.begin(); vi!= vertices.end(); ++vi)
                     {
-                        vector<FacePointer> incident_faces = get_incident_faces(*vi);
+                        std::vector<FacePointer> incident_faces = get_incident_faces(*vi);
                         ret.insert(incident_faces.begin(), incident_faces.end());
                     }
 
@@ -1450,7 +1451,7 @@ namespace vcg
                   *
                   * \return Vector containing the incident vertices
                   */
-                static vector<VertexPointer> getVertices(FacePointer fp, HEdgePointer starting_he = NULL)
+                static std::vector<VertexPointer> getVertices(FacePointer fp, HEdgePointer starting_he = NULL)
                 {
                     assert(fp);
                     assert(!fp->IsD());
@@ -1462,7 +1463,7 @@ namespace vcg
 
                     Pos<MeshType> p( starting_he, true );
 
-                    vector<VertexPointer> ret;
+                    std::vector<VertexPointer> ret;
 
 
                     do
@@ -1491,7 +1492,7 @@ namespace vcg
                   *
                   * \return Vector containing the incident hedges
                   */
-                static vector<HEdgePointer> getHEdges(FacePointer fp, HEdgePointer starting_he = NULL)
+                static std::vector<HEdgePointer> getHEdges(FacePointer fp, HEdgePointer starting_he = NULL)
                 {
                     assert(fp);
                     assert(!fp->IsD());
@@ -1503,7 +1504,7 @@ namespace vcg
 
                     Pos<MeshType> p( starting_he, true );
 
-                    vector<HEdgePointer> ret;
+                    std::vector<HEdgePointer> ret;
 
                     do
                     {
@@ -1530,7 +1531,7 @@ namespace vcg
                   *
                   * \return Vector containing the incident faces
                   */
-                static vector<FacePointer> get_incident_faces(VertexPointer vp, HEdgePointer starting_he = NULL)
+                static std::vector<FacePointer> get_incident_faces(VertexPointer vp, HEdgePointer starting_he = NULL)
                 {
                     assert(vp);
                     assert(!vp->IsD());
@@ -1540,7 +1541,7 @@ namespace vcg
                     else
                         starting_he = vp->VHp();
 
-                    vector<FacePointer> ret;
+                    std::vector<FacePointer> ret;
 
                     if(!starting_he)
                         return ret;
@@ -1561,12 +1562,12 @@ namespace vcg
                 }
 
 
-                static vector<FacePointer> get_adjacent_faces(FacePointer fp)
+                static std::vector<FacePointer> get_adjacent_faces(FacePointer fp)
                 {
                     assert(fp);
                     assert(!fp->IsD());
 
-                    vector<FacePointer> ret;
+                    std::vector<FacePointer> ret;
 
                     Pos<MeshType> p( fp->FHp() );
                     assert(p.F() == fp);
@@ -1594,7 +1595,7 @@ namespace vcg
                   *
                   * \return Vector containing the incident hedges
                   */
-                static vector<HEdgePointer> get_incident_hedges(VertexPointer vp, HEdgePointer starting_he = NULL)
+                static std::vector<HEdgePointer> get_incident_hedges(VertexPointer vp, HEdgePointer starting_he = NULL)
                 {
                     assert(vp);
                     assert(!vp->IsD());
@@ -1604,7 +1605,7 @@ namespace vcg
                     else
                         starting_he = vp->VHp();
 
-                    vector<HEdgePointer> ret;
+                    std::vector<HEdgePointer> ret;
 
                     if(!starting_he)
                         return ret;
@@ -1647,13 +1648,13 @@ namespace vcg
                   *
                   * \return Vector containing the hedges
                   */
-                static vector<HEdgePointer> find_doublet_hedges_quad(FacePointer fp)
+                static std::vector<HEdgePointer> find_doublet_hedges_quad(FacePointer fp)
                 {
                     assert(fp);
                     assert(fp->FHp());
                     assert(!fp->IsD());
 
-                    vector<HEdgePointer> ret;
+                    std::vector<HEdgePointer> ret;
 
                     Pos<MeshType> p( fp->FHp(), true );
 

@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 * VCGLib                                                            o o     *
 * Visual and Computer Graphics Library                            o     o   *
 *                                                                _   O  _   *
@@ -27,8 +27,6 @@
 #include <vcg/complex/algorithms/update/topology.h>
 #include <vcg/complex/algorithms/update/quality.h>
 #include <vcg/complex/algorithms/harmonic.h>
-
-using namespace std;
 
 namespace vcg {
 namespace tri {

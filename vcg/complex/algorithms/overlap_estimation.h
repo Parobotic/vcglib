@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 * VCGLib                                                            o o     *
 * Visual and Computer Graphics Library                            o     o   *
 *                                                                _   O  _   *
@@ -8,7 +8,7 @@
 *                                                                    \      *
 * All rights reserved.                                                      *
 *                                                                           *
-* This program is free software; you can redistribute it and/or modify      *   
+* This program is free software; you can redistribute it and/or modify      *
 * it under the terms of the GNU General Public License as published by      *
 * the Free Software Foundation; either version 2 of the License, or         *
 * (at your option) any later version.                                       *
@@ -32,7 +32,6 @@
 
 #include <qdatetime.h>
 
-using namespace std;
 using namespace vcg;
 
 /** \brief This class provides a strategy to estimate the overlap percentage of two range maps/point clouds.

@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 * VCGLib                                                            o o     *
 * Visual and Computer Graphics Library                            o     o   *
 *                                                                _   O  _   *
@@ -614,10 +614,10 @@ static ScalarType _SQfnS(ScalarType a, ScalarType b){
 
 /**
  * SuperToroid
- * 
- * Generate a  a supertoroid, e.g. a member of a family of doughnut-like surfaces 
- * (technically, a topological torus) whose shape is defined by mathematical formulas 
- * similar to those that define the superquadrics. 
+ *
+ * Generate a  a supertoroid, e.g. a member of a family of doughnut-like surfaces
+ * (technically, a topological torus) whose shape is defined by mathematical formulas
+ * similar to those that define the superquadrics.
  */
 template <class MeshType>
 void SuperToroid(MeshType &m, float hRingRadius, float vRingRadius, float vSquareness, float hSquareness, int hRingDiv=24, int vRingDiv=12 )
@@ -627,7 +627,7 @@ void SuperToroid(MeshType &m, float hRingRadius, float vRingRadius, float vSquar
   m.Clear();
   ScalarType angleStepV = (2.0f*M_PI)/vRingDiv;
   ScalarType angleStepH = (2.0f*M_PI)/hRingDiv;
-  
+
   ScalarType u,v;
   int count;
   Allocator<MeshType>::AddVertices(m,(vRingDiv+1)*(hRingDiv+1));
@@ -653,7 +653,7 @@ void SuperToroid(MeshType &m, float hRingRadius, float vRingRadius, float vSquar
 }
 /**
  * Generate a SuperEllipsoid eg  a solid whose horizontal sections are super-ellipses (Lamé curves)
- * with the same exponent r, and whose vertical sections through the center are super-ellipses with 
+ * with the same exponent r, and whose vertical sections through the center are super-ellipses with
  * the same exponent t.
  */
 template <class MeshType>
@@ -686,7 +686,7 @@ void SuperEllipsoid(MeshType &m, float rFeature, float sFeature, float tFeature,
   tri::Allocator<MeshType>::CompactEveryVector(m);
   bool oriented, orientable;
   tri::UpdateTopology<MeshType>::FaceFace(m);
-  tri::Clean<MeshType>::OrientCoherentlyMesh(m,oriented,orientable);  
+  tri::Clean<MeshType>::OrientCoherentlyMesh(m,oriented,orientable);
   tri::UpdateSelection<MeshType>::Clear(m);
 }
 
@@ -839,7 +839,7 @@ void FaceGrid(MeshType & in, int w, int h)
 
 // Build a regular grid mesh of faces as the resulto of a sparsely regularly sampled height field.
 // Vertexes are assumed to be already be allocated, but not all the grid vertexes are present.
-// For this purpose vector with a grid of indexes is also passed. 
+// For this purpose vector with a grid of indexes is also passed.
 // Negative indexes in this vector means that there is no vertex.
 
 template <class MeshType>
@@ -1090,7 +1090,7 @@ struct _SphUsedTypes : public UsedTypes<	Use<_SphVertex>   ::AsVertexType,
 
 class _SphVertex  : public Vertex<_SphUsedTypes,  vertex::Coord3f, vertex::Normal3f, vertex::BitFlags  >{};
 class _SphFace    : public Face< _SphUsedTypes,   face::VertexRef, face::Normal3f, face::BitFlags, face::FFAdj > {};
-class _SphMesh    : public tri::TriMesh< vector<_SphVertex>, vector<_SphFace>   > {};
+class _SphMesh    : public tri::TriMesh< std::vector<_SphVertex>, std::vector<_SphFace>   > {};
 
 
 template <class MeshType>

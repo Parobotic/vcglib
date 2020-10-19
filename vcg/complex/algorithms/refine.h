@@ -1,4 +1,4 @@
-/***********F*****************************************************************
+﻿/***********F*****************************************************************
 * VCGLib                                                            o o     *
 * Visual and Computer Graphics Library                            o     o   *
 *                                                                _   O  _   *
@@ -126,7 +126,7 @@ struct BaseInterpolator
 // providing, in the constructor, an interpolator functor that will be called for each new vertex to be created.
 
 template<class MESH_TYPE, class InterpolatorFunctorType = BaseInterpolator< MESH_TYPE> >
-struct MidPoint : public   std::unary_function<face::Pos<typename MESH_TYPE::FaceType> ,  typename MESH_TYPE::CoordType >
+struct MidPoint : public   unary_function<face::Pos<typename MESH_TYPE::FaceType> ,  typename MESH_TYPE::CoordType >
 {
      typedef typename face::Pos<typename MESH_TYPE::FaceType> PosType;
      typedef typename MESH_TYPE::VertexType VertexType;
@@ -183,7 +183,7 @@ struct MidPoint : public   std::unary_function<face::Pos<typename MESH_TYPE::Fac
 
 
 template<class MESH_TYPE>
-struct MidPointArc : public std::unary_function<face::Pos<typename MESH_TYPE::FaceType> ,  typename MESH_TYPE::CoordType>
+struct MidPointArc : public unary_function<face::Pos<typename MESH_TYPE::FaceType> ,  typename MESH_TYPE::CoordType>
 {
     void operator()(typename MESH_TYPE::VertexType &nv, face::Pos<typename MESH_TYPE::FaceType> ep)
     {
@@ -255,7 +255,7 @@ A non linear subdivision scheme for triangle meshes
 
 */
 template<class MESH_TYPE>
-struct MidPointArcNaive : public std::unary_function< face::Pos<typename MESH_TYPE::FaceType> , typename MESH_TYPE::CoordType>
+struct MidPointArcNaive : public unary_function< face::Pos<typename MESH_TYPE::FaceType> , typename MESH_TYPE::CoordType>
 {
     typename MESH_TYPE::CoordType operator()(face::Pos<typename MESH_TYPE::FaceType>  ep)
     {
@@ -562,7 +562,7 @@ Siggraph 2000 Course Notes
 */
 
 template<class MESH_TYPE>
-struct MidPointButterfly : public std::unary_function<face::Pos<typename MESH_TYPE::FaceType> , typename MESH_TYPE::CoordType>
+struct MidPointButterfly : public unary_function<face::Pos<typename MESH_TYPE::FaceType> , typename MESH_TYPE::CoordType>
 {
   MESH_TYPE &m;
   MidPointButterfly(MESH_TYPE &_m):m(_m){}
@@ -676,7 +676,7 @@ struct MidPointButterfly : public std::unary_function<face::Pos<typename MESH_TY
 // Versione modificata per tenere di conto in meniara corretta dei vertici con valenza alta
 
 template<class MESH_TYPE>
-struct MidPointButterfly2 : public std::unary_function<face::Pos<typename MESH_TYPE::FaceType> , typename MESH_TYPE::CoordType>
+struct MidPointButterfly2 : public unary_function<face::Pos<typename MESH_TYPE::FaceType> , typename MESH_TYPE::CoordType>
 {
     typename MESH_TYPE::CoordType operator()(face::Pos<typename MESH_TYPE::FaceType>  ep)
     {
@@ -767,7 +767,7 @@ face::Pos<typename MESH_TYPE::FaceType> he(ep.f,ep.z,ep.f->V(ep.z));
   */
 
 template<class MESH_TYPE>
-class QualityMidPointFunctor : public std::unary_function<face::Pos<typename MESH_TYPE::FaceType> , typename MESH_TYPE::CoordType>
+class QualityMidPointFunctor : public unary_function<face::Pos<typename MESH_TYPE::FaceType> , typename MESH_TYPE::CoordType>
 {
 public:
   typedef Point3<typename MESH_TYPE::ScalarType> Point3x;
@@ -830,7 +830,7 @@ class QualityEdgePredicate
 
 
 template<class MESH_TYPE>
-struct MidPointSphere : public std::unary_function<face::Pos<typename MESH_TYPE::FaceType> , typename MESH_TYPE::CoordType>
+struct MidPointSphere : public unary_function<face::Pos<typename MESH_TYPE::FaceType> , typename MESH_TYPE::CoordType>
 {
     Sphere3<typename MESH_TYPE::ScalarType> sph;
     typedef Point3<typename MESH_TYPE::ScalarType> Point3x;
@@ -876,7 +876,7 @@ class EdgeSplSphere
 };
 
 template<class TRIMESH_TYPE>
-struct CenterPointBarycenter : public std::unary_function<typename TRIMESH_TYPE::FacePointer, typename TRIMESH_TYPE::CoordType>
+struct CenterPointBarycenter : public unary_function<typename TRIMESH_TYPE::FacePointer, typename TRIMESH_TYPE::CoordType>
 {
     typename TRIMESH_TYPE::CoordType operator()(typename TRIMESH_TYPE::FacePointer f){
         return vcg::Barycenter<typename TRIMESH_TYPE::FaceType>(*f);
@@ -971,12 +971,12 @@ void TrivialMidPointRefine(MeshType & m)
   typedef typename MeshType::FaceIterator FaceIterator;
   typedef typename MeshType::VertexPointer VertexPointer;
   typedef typename MeshType::FacePointer FacePointer;
-  
+
   Allocator<MeshType>::CompactEveryVector(m);
   int startFn = m.fn;
   FaceIterator lastf = tri::Allocator<MeshType>::AddFaces(m,m.fn*3);
   VertexIterator lastv = tri::Allocator<MeshType>::AddVertices(m,m.fn*3);
-  
+
   /*
    *               v0
    *              /  \
@@ -989,20 +989,20 @@ void TrivialMidPointRefine(MeshType & m)
    *v1 ---------- mp12------------v2
    *
   */
-  
+
   for(int i=0;i<startFn;++i)
   {
     FacePointer f0= &m.face[i];
     FacePointer f1= &*lastf; ++lastf;
     FacePointer f2= &*lastf; ++lastf;
-    FacePointer f3= &*lastf; ++lastf;    
-    VertexPointer v0 =m.face[i].V(0); 
-    VertexPointer v1 =m.face[i].V(1); 
-    VertexPointer v2 =m.face[i].V(2); 
-    VertexPointer mp01 = &*lastv; ++lastv; 
-    VertexPointer mp12 = &*lastv; ++lastv; 
-    VertexPointer mp02 = &*lastv; ++lastv; 
-    
+    FacePointer f3= &*lastf; ++lastf;
+    VertexPointer v0 =m.face[i].V(0);
+    VertexPointer v1 =m.face[i].V(1);
+    VertexPointer v2 =m.face[i].V(2);
+    VertexPointer mp01 = &*lastv; ++lastv;
+    VertexPointer mp12 = &*lastv; ++lastv;
+    VertexPointer mp02 = &*lastv; ++lastv;
+
     f0->V(0) = v0;   f0->V(1) = mp01; f0->V(2) = mp02;
     f1->V(0) = v1;   f1->V(1) = mp12; f1->V(2) = mp01;
     f2->V(0) = v2;   f2->V(1) = mp02; f2->V(2) = mp12;
@@ -1011,7 +1011,7 @@ void TrivialMidPointRefine(MeshType & m)
     mp12->P() = (v1>v2) ? (v1->P()+v2->P())/2.0 : (v2->P()+v1->P())/2.0;
     mp02->P() = (v0>v2) ? (v0->P()+v2->P())/2.0 : (v2->P()+v0->P())/2.0;
   }
-  
+
   int vd = tri::Clean<MeshType>::RemoveDuplicateVertex(m);
   printf("Vertex unification %i\n",vd);
   int vu = tri::Clean<MeshType>::RemoveUnreferencedVertex(m);
